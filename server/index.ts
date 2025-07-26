@@ -30,6 +30,218 @@ let globalCapsules = [
 let globalScienceArticles: any[] = [];
 let globalHumanityArticles: any[] = [];
 
+// Route admin séparée
+app.get('/admin', (req, res) => {
+  const adminPageHtml = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration RAUN-RACHID</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Courier New', monospace; background: #000; color: #00ff00; min-height: 100vh; position: relative; }
+        
+        .admin-container { max-width: 1200px; margin: 2rem auto; padding: 2rem; }
+        .admin-header { text-align: center; margin-bottom: 3rem; padding: 2rem; border: 2px solid #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .admin-header h1 { font-size: 2.5rem; color: #00ff41; text-shadow: 0 0 20px rgba(0,255,0,0.6); margin-bottom: 1rem; }
+        
+        .admin-section { margin-bottom: 3rem; padding: 2rem; border: 1px solid #00ff00; background: rgba(0, 255, 0, 0.05); }
+        .admin-section h2 { color: #00ff41; margin-bottom: 1.5rem; font-size: 1.8rem; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { padding: 1.5rem; border: 1px solid #00ff00; background: rgba(0, 255, 0, 0.1); text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; color: #00ff41; }
+        
+        .capsule-form { display: grid; gap: 1rem; margin-bottom: 2rem; }
+        .capsule-form input, .capsule-form textarea { padding: 1rem; background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; }
+        .capsule-form textarea { min-height: 150px; }
+        
+        .btn-primary, .btn-secondary, .btn-danger { padding: 1rem 2rem; border: 2px solid #00ff00; background: rgba(0, 255, 0, 0.1); color: #00ff00; cursor: pointer; font-family: 'Courier New', monospace; font-weight: bold; }
+        .btn-primary:hover, .btn-secondary:hover { background: rgba(0, 255, 0, 0.2); }
+        .btn-danger { border-color: #ff4444; color: #ff4444; background: rgba(255, 68, 68, 0.1); }
+        .btn-danger:hover { background: rgba(255, 68, 68, 0.2); }
+        
+        .capsules-management { display: grid; gap: 1rem; }
+        .capsule-item { padding: 1rem; border: 1px solid #00ff00; background: rgba(0, 255, 0, 0.1); display: flex; justify-content: space-between; align-items: start; }
+        .capsule-preview { flex: 1; margin-right: 1rem; }
+        .capsule-actions { display: flex; gap: 0.5rem; flex-direction: column; }
+        
+        .login-form { max-width: 400px; margin: 5rem auto; padding: 2rem; border: 2px solid #00ff00; background: rgba(0, 255, 0, 0.1); }
+        .login-form input { width: 100%; margin-bottom: 1rem; padding: 0.75rem; background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00; color: #00ff00; }
+        
+        .back-to-main { position: fixed; top: 2rem; left: 2rem; padding: 1rem; background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00; color: #00ff00; text-decoration: none; }
+        .back-to-main:hover { background: rgba(0, 255, 0, 0.2); }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-to-main">← Retour à l'accueil</a>
+    
+    <!-- Formulaire de connexion -->
+    <div id="login-screen" class="login-form">
+        <h2 style="text-align: center; margin-bottom: 2rem;">🔐 Authentification Admin</h2>
+        <input type="text" id="admin-username" placeholder="Nom d'utilisateur" value="rachid">
+        <input type="password" id="admin-password" placeholder="Mot de passe" value="raun2025">
+        <button onclick="adminLogin()" class="btn-primary" style="width: 100%;">
+            Se connecter
+        </button>
+    </div>
+
+    <!-- Interface d'administration -->
+    <div id="admin-interface" style="display: none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>⚙️ Administration RAUN-RACHID</h1>
+                <p>Interface de gestion des capsules et intentions</p>
+                <button onclick="adminLogout()" class="btn-secondary">
+                    🚪 Déconnexion
+                </button>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="admin-section">
+                <h2>📊 Statistiques</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-capsules">3</div>
+                        <div>Capsules totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-intentions">0</div>
+                        <div>Intentions reçues</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-views">3595</div>
+                        <div>Vues totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-votes">268</div>
+                        <div>Votes totaux</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Création de capsule -->
+            <div class="admin-section">
+                <h2>➕ Créer une nouvelle capsule</h2>
+                <div class="capsule-form">
+                    <input type="text" id="new-capsule-title" placeholder="Titre de la capsule">
+                    <textarea id="new-capsule-content" placeholder="Contenu spirituel de la capsule..."></textarea>
+                    <input type="text" id="new-capsule-author" placeholder="Auteur (optionnel)" value="RAUN-RACHID">
+                    <button onclick="createCapsule()" class="btn-primary">
+                        ✨ Créer la capsule
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gestion des capsules -->
+            <div class="admin-section">
+                <h2>🗂️ Gestion des capsules</h2>
+                <div id="admin-capsules-list" class="capsules-management">
+                    <!-- Les capsules seront chargées ici -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales admin
+        let isAuthenticated = false;
+        
+        // Authentification
+        function adminLogin() {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (username === 'rachid' && password === 'raun2025') {
+                isAuthenticated = true;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-interface').style.display = 'block';
+                loadAdminData();
+                alert('Connexion réussie ! Bienvenue RACHID.');
+            } else {
+                alert('Identifiants incorrects.');
+            }
+        }
+        
+        function adminLogout() {
+            isAuthenticated = false;
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('admin-interface').style.display = 'none';
+        }
+        
+        // Chargement des données admin
+        function loadAdminData() {
+            // Simulation des données
+            document.getElementById('stats-capsules').textContent = '3';
+            document.getElementById('stats-intentions').textContent = '0';
+            document.getElementById('stats-views').textContent = '3595';
+            document.getElementById('stats-votes').textContent = '268';
+            
+            loadAdminCapsules();
+        }
+        
+        function loadAdminCapsules() {
+            const container = document.getElementById('admin-capsules-list');
+            container.innerHTML = \`
+                <div class="capsule-item">
+                    <div class="capsule-preview">
+                        <h4>L'Éveil de la Conscience</h4>
+                        <p>☀️ L'éveil commence par la reconnaissance de notre nature divine...</p>
+                        <small>👁 1247 vues • 💚 89 votes</small>
+                    </div>
+                    <div class="capsule-actions">
+                        <button class="btn-danger">🗑️ Supprimer</button>
+                    </div>
+                </div>
+                <div class="capsule-item">
+                    <div class="capsule-preview">
+                        <h4>Le Feu Sacré de la Conscience</h4>
+                        <p>🔥 La conscience est le feu sacré qui illumine notre chemin...</p>
+                        <small>👁 892 vues • 💚 67 votes</small>
+                    </div>
+                    <div class="capsule-actions">
+                        <button class="btn-danger">🗑️ Supprimer</button>
+                    </div>
+                </div>
+                <div class="capsule-item">
+                    <div class="capsule-preview">
+                        <h4>Le Silence de l'Essence</h4>
+                        <p>✨ Dans le silence de la méditation, nous retrouvons...</p>
+                        <small>👁 1456 vues • 💚 112 votes</small>
+                    </div>
+                    <div class="capsule-actions">
+                        <button class="btn-danger">🗑️ Supprimer</button>
+                    </div>
+                </div>
+            \`;
+        }
+        
+        // Création de capsule
+        function createCapsule() {
+            const title = document.getElementById('new-capsule-title').value.trim();
+            const content = document.getElementById('new-capsule-content').value.trim();
+            const author = document.getElementById('new-capsule-author').value.trim() || 'RAUN-RACHID';
+            
+            if (!content) {
+                alert('Le contenu est obligatoire.');
+                return;
+            }
+            
+            // Reset form
+            document.getElementById('new-capsule-title').value = '';
+            document.getElementById('new-capsule-content').value = '';
+            
+            alert('Capsule créée avec succès !');
+            loadAdminData();
+        }
+    </script>
+</body>
+</html>`;
+  
+  res.send(adminPageHtml);
+});
+
 // Route principale
 app.get('/', (req, res) => {
   const mainPageHtml = `<!DOCTYPE html>
@@ -82,6 +294,8 @@ app.get('/', (req, res) => {
         
         .intentions-section { text-align: center; margin: 4rem 0; }
         .admin-section { text-align: center; margin: 4rem 0; }
+        .admin-link { display: inline-block; background: linear-gradient(135deg, rgba(0,255,0,0.2), rgba(0,255,0,0.4)); border: 2px solid rgba(0,255,0,0.6); color: #00ff00; padding: 1rem 2rem; border-radius: 10px; text-decoration: none; font-weight: bold; margin: 1rem; transition: all 0.3s ease; }
+        .admin-link:hover { background: linear-gradient(135deg, rgba(0,255,0,0.4), rgba(0,255,0,0.6)); transform: translateY(-2px); box-shadow: 0 0 20px rgba(0,255,0,0.4); }
         
         .write-zone { margin-top: 3rem; background: rgba(0,255,0,0.05); border: 2px solid rgba(0,255,0,0.3); border-radius: 15px; padding: 2rem; }
         .write-zone h3 { color: #00ff41; margin-bottom: 1rem; font-size: 1.5rem; }
@@ -182,9 +396,9 @@ app.get('/', (req, res) => {
     </section>
 
     <section class="admin-section">
-        <button class="action-btn" onclick="adminLogin()" style="background: linear-gradient(135deg, rgba(255,165,0,0.3), rgba(255,165,0,0.5)); border-color: #ffa500; color: #ffa500;">
-            🔧 Administration RAUN
-        </button>
+        <h2>⚙️ Administration</h2>
+        <p>Accédez à l'interface d'administration complète</p>
+        <a href="/admin" class="admin-link">🔐 Interface Administrateur</a>
     </section>
 
     <!-- Modal commentaires -->
