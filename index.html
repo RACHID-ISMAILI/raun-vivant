@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAUN-RACHID | LangueSage - Réseau d'Éveil et de Conscience</title>
+    <meta name="description" content="Plateforme spirituelle numérique de conscience et d'éveil. Découvrez les capsules de sagesse de RAUN-RACHID.">
+    <meta name="keywords" content="spiritualité, conscience, éveil, RAUN-RACHID, sagesse, méditation">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="RAUN-RACHID | LangueSage">
+    <meta property="og:description" content="Espace numérique de conscience et d'éveil spirituel">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://votre-domaine.com/raun-icon.png">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='90' font-size='90' fill='%2300ff00'>R</text></svg>">
+</head>
+<body>
+    <div id="matrix-rain"></div>
+    
+    <div class="app-container">
+        <!-- Header avec profil -->
+        <header class="header">
+            <div class="profile-section">
+                <div class="profile-container">
+                    <div class="profile-image">
+                        <div class="profile-placeholder">R</div>
+                    </div>
+                    <div class="rotating-text">
+                        <span style="transform: rotate(0deg);">R</span>
+                        <span style="transform: rotate(30deg);">A</span>
+                        <span style="transform: rotate(60deg);">C</span>
+                        <span style="transform: rotate(90deg);">H</span>
+                        <span style="transform: rotate(120deg);">I</span>
+                        <span style="transform: rotate(150deg);">D</span>
+                        <span style="transform: rotate(180deg);">•</span>
+                        <span style="transform: rotate(210deg);">É</span>
+                        <span style="transform: rotate(240deg);">V</span>
+                        <span style="transform: rotate(270deg);">E</span>
+                        <span style="transform: rotate(300deg);">I</span>
+                        <span style="transform: rotate(330deg);">L</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="message-defilant">
+                🔥 "Je suis vivant en conscience, nul ne peut éteindre ce que je suis" 🔥
+            </div>
+        </header>
+
+        <!-- Layout principal -->
+        <div class="main-layout">
+            <!-- Zone principale LangueSage -->
+            <main class="main-content">
+                <div id="welcome-screen">
+                    <h1 class="main-title">RAUN-RACHID LangueSage</h1>
+                    <p class="subtitle">Espace numérique de conscience et d'éveil spirituel</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <h3>📁 Capsules de Conscience</h3>
+                            <p>Cliquez sur une capsule dans la sidebar pour l'afficher ici</p>
+                            <small>Navigation interactive</small>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h3>💭 Intentions Sacrées</h3>
+                            <p>Partagez vos intentions et recevez des réponses spirituelles</p>
+                            <small>Guidance automatique</small>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <h3>⚡ Interface Matrix</h3>
+                            <p>Design immersif avec animations numériques</p>
+                            <small>Expérience unique</small>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button onclick="showIntentions()" class="btn-primary">
+                            💭 Créer une Intention
+                        </button>
+                        <button onclick="window.location.href='admin.html'" class="btn-secondary">
+                            ⚙️ Administration
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Zone d'affichage capsule sélectionnée -->
+                <div id="capsule-display" class="capsule-display" style="display: none;">
+                    <button onclick="showWelcome()" class="back-btn">← Retour</button>
+                    <div class="capsule-content">
+                        <h2 id="capsule-title"></h2>
+                        <div id="capsule-text"></div>
+                        <div class="capsule-stats">
+                            <span id="capsule-views">👁 0 vues</span>
+                            <span id="capsule-likes">💚 0 likes</span>
+                        </div>
+                        <div class="capsule-actions">
+                            <button onclick="likeCapsule()" id="like-btn" class="action-btn">
+                                💚 Aimer
+                            </button>
+                            <button onclick="showComments()" class="action-btn">
+                                💬 Commentaires
+                            </button>
+                            <button onclick="shareCapsule()" class="action-btn">
+                                🔗 Partager
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zone commentaires -->
+                <div id="comments-section" class="comments-section" style="display: none;">
+                    <h3>💬 Commentaires</h3>
+                    <div id="comments-list"></div>
+                    <div class="comment-form">
+                        <textarea id="comment-text" placeholder="Votre commentaire..."></textarea>
+                        <button onclick="addComment()">Publier</button>
+                    </div>
+                </div>
+
+                <!-- Modal intentions -->
+                <div id="intentions-modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeIntentions()">&times;</span>
+                        <h2>💭 Intentions Sacrées</h2>
+                        <p>Exprimez votre intention avec authenticité. L'univers écoute.</p>
+                        <textarea id="intention-text" placeholder="Votre intention sacrée..."></textarea>
+                        <input type="text" id="intention-author" placeholder="Votre nom (optionnel)">
+                        <button onclick="submitIntention()" class="btn-primary">
+                            ✨ Transmettre l'Intention
+                        </button>
+                        
+                        <div id="intentions-list">
+                            <h3>Intentions partagées</h3>
+                            <div id="intentions-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Sidebar RAUN-RACHID -->
+            <aside class="sidebar">
+                <h3 class="sidebar-title">🔥 Capsules RAUN-RACHID</h3>
+                <div id="capsules-list">
+                    <!-- Les capsules seront chargées ici par JavaScript -->
+                </div>
+                
+                <div class="sidebar-stats">
+                    <div class="stat-item">
+                        <span>📊 Total capsules</span>
+                        <span id="total-capsules">3</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁 Total vues</span>
+                        <span id="total-views">892</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>💚 Total likes</span>
+                        <span id="total-likes">168</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

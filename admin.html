@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration RAUN-RACHID</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 2px solid var(--matrix-green);
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .admin-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border: 1px solid var(--matrix-green);
+            background: rgba(0, 255, 0, 0.05);
+        }
+        
+        .capsule-form {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .capsule-form textarea {
+            min-height: 150px;
+            padding: 1rem;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .capsule-form input {
+            padding: 0.5rem;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+        }
+        
+        .capsules-management {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .capsule-item {
+            padding: 1rem;
+            border: 1px solid var(--matrix-green);
+            background: rgba(0, 255, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+        
+        .capsule-preview {
+            flex: 1;
+            margin-right: 1rem;
+        }
+        
+        .capsule-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-direction: column;
+        }
+        
+        .btn-danger {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .btn-danger:hover {
+            background: #ff6666;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            padding: 1.5rem;
+            border: 1px solid var(--matrix-green);
+            background: rgba(0, 255, 0, 0.1);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--matrix-green);
+        }
+        
+        .login-form {
+            max-width: 400px;
+            margin: 5rem auto;
+            padding: 2rem;
+            border: 2px solid var(--matrix-green);
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .login-form input {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid var(--matrix-green);
+            color: var(--matrix-green);
+        }
+    </style>
+</head>
+<body>
+    <div id="matrix-rain"></div>
+    
+    <!-- Formulaire de connexion -->
+    <div id="login-screen" class="login-form">
+        <h2 style="text-align: center; margin-bottom: 2rem;">🔐 Authentification Admin</h2>
+        <input type="text" id="admin-username" placeholder="Nom d'utilisateur" value="rachid">
+        <input type="password" id="admin-password" placeholder="Mot de passe" value="raun2025">
+        <button onclick="adminLogin()" class="btn-primary" style="width: 100%;">
+            Se connecter
+        </button>
+        <div style="text-align: center; margin-top: 1rem;">
+            <a href="index.html" style="color: var(--matrix-green);">← Retour à l'accueil</a>
+        </div>
+    </div>
+
+    <!-- Interface d'administration -->
+    <div id="admin-interface" style="display: none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>⚙️ Administration RAUN-RACHID</h1>
+                <p>Interface de gestion des capsules et intentions</p>
+                <button onclick="adminLogout()" class="btn-secondary">
+                    🚪 Déconnexion
+                </button>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="admin-section">
+                <h2>📊 Statistiques</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-capsules">3</div>
+                        <div>Capsules totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-intentions">0</div>
+                        <div>Intentions reçues</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-views">892</div>
+                        <div>Vues totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stats-likes">168</div>
+                        <div>Likes totaux</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Création de capsule -->
+            <div class="admin-section">
+                <h2>➕ Créer une nouvelle capsule</h2>
+                <div class="capsule-form">
+                    <input type="text" id="new-capsule-title" placeholder="Titre de la capsule">
+                    <textarea id="new-capsule-content" placeholder="Contenu spirituel de la capsule..."></textarea>
+                    <input type="text" id="new-capsule-author" placeholder="Auteur (optionnel)" value="RAUN-RACHID">
+                    <button onclick="createCapsule()" class="btn-primary">
+                        ✨ Créer la capsule
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gestion des capsules -->
+            <div class="admin-section">
+                <h2>🗂️ Gestion des capsules</h2>
+                <div id="admin-capsules-list" class="capsules-management">
+                    <!-- Les capsules seront chargées ici -->
+                </div>
+            </div>
+
+            <!-- Gestion des intentions -->
+            <div class="admin-section">
+                <h2>💭 Intentions reçues</h2>
+                <div id="admin-intentions-list">
+                    <!-- Les intentions seront chargées ici -->
+                </div>
+            </div>
+
+            <!-- Sauvegarde / Restauration -->
+            <div class="admin-section">
+                <h2>💾 Sauvegarde & Restauration</h2>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <button onclick="exportData()" class="btn-secondary">
+                        📥 Exporter les données
+                    </button>
+                    <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button onclick="document.getElementById('import-file').click()" class="btn-secondary">
+                        📤 Importer les données
+                    </button>
+                    <button onclick="resetData()" class="btn-danger">
+                        🗑️ Réinitialiser tout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="config.js"></script>
+    <script>
+        // Variables globales admin
+        let isAuthenticated = false;
+        
+        // Authentification
+        function adminLogin() {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (username === 'rachid' && password === 'raun2025') {
+                isAuthenticated = true;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-interface').style.display = 'block';
+                loadAdminData();
+                showToast('Connexion réussie ! Bienvenue RACHID.', 'success');
+            } else {
+                showToast('Identifiants incorrects.', 'error');
+            }
+        }
+        
+        function adminLogout() {
+            isAuthenticated = false;
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('admin-interface').style.display = 'none';
+            showToast('Déconnexion réussie.', 'info');
+        }
+        
+        // Chargement des données admin
+        function loadAdminData() {
+            loadAdminStats();
+            loadAdminCapsules();
+            loadAdminIntentions();
+        }
+        
+        function loadAdminStats() {
+            const capsules = JSON.parse(localStorage.getItem('raunCapsules')) || defaultCapsules;
+            const intentions = JSON.parse(localStorage.getItem('raunIntentions')) || [];
+            
+            const totalViews = capsules.reduce((sum, c) => sum + c.views, 0);
+            const totalLikes = capsules.reduce((sum, c) => sum + c.likes, 0);
+            
+            document.getElementById('stats-capsules').textContent = capsules.length;
+            document.getElementById('stats-intentions').textContent = intentions.length;
+            document.getElementById('stats-views').textContent = totalViews;
+            document.getElementById('stats-likes').textContent = totalLikes;
+        }
+        
+        function loadAdminCapsules() {
+            const capsules = JSON.parse(localStorage.getItem('raunCapsules')) || defaultCapsules;
+            const container = document.getElementById('admin-capsules-list');
+            
+            container.innerHTML = capsules.map(capsule => `
+                <div class="capsule-item">
+                    <div class="capsule-preview">
+                        <h4>${capsule.title || 'Capsule #' + capsule.id}</h4>
+                        <p>${capsule.content.substring(0, 100)}...</p>
+                        <small>👁 ${capsule.views} vues • 💚 ${capsule.likes} likes</small>
+                    </div>
+                    <div class="capsule-actions">
+                        <button onclick="editCapsule(${capsule.id})" class="btn-secondary">
+                            ✏️ Modifier
+                        </button>
+                        <button onclick="deleteCapsule(${capsule.id})" class="btn-danger">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadAdminIntentions() {
+            const intentions = JSON.parse(localStorage.getItem('raunIntentions')) || [];
+            const container = document.getElementById('admin-intentions-list');
+            
+            if (intentions.length === 0) {
+                container.innerHTML = '<p>Aucune intention reçue pour le moment.</p>';
+                return;
+            }
+            
+            container.innerHTML = intentions.map(intention => `
+                <div class="capsule-item">
+                    <div class="capsule-preview">
+                        <h4>💭 ${intention.author || 'Anonyme'}</h4>
+                        <p><strong>Intention:</strong> ${intention.content}</p>
+                        ${intention.response ? `<p><strong>Réponse:</strong> ${intention.response}</p>` : ''}
+                        <small>📅 ${new Date(intention.createdAt).toLocaleString()}</small>
+                    </div>
+                    <div class="capsule-actions">
+                        <button onclick="deleteIntention(${intention.id})" class="btn-danger">
+                            🗑️ Supprimer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Création de capsule
+        function createCapsule() {
+            const title = document.getElementById('new-capsule-title').value.trim();
+            const content = document.getElementById('new-capsule-content').value.trim();
+            const author = document.getElementById('new-capsule-author').value.trim() || 'RAUN-RACHID';
+            
+            if (!content) {
+                showToast('Le contenu est obligatoire.', 'error');
+                return;
+            }
+            
+            const capsules = JSON.parse(localStorage.getItem('raunCapsules')) || defaultCapsules;
+            const newId = Math.max(...capsules.map(c => c.id)) + 1;
+            
+            const newCapsule = {
+                id: newId,
+                title: title || `Capsule #${newId}`,
+                content: content,
+                author: author,
+                views: 0,
+                likes: 0,
+                createdAt: new Date().toISOString()
+            };
+            
+            capsules.push(newCapsule);
+            localStorage.setItem('raunCapsules', JSON.stringify(capsules));
+            
+            // Reset form
+            document.getElementById('new-capsule-title').value = '';
+            document.getElementById('new-capsule-content').value = '';
+            
+            loadAdminData();
+            showToast('Capsule créée avec succès !', 'success');
+        }
+        
+        // Suppression
+        function deleteCapsule(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette capsule ?')) return;
+            
+            const capsules = JSON.parse(localStorage.getItem('raunCapsules')) || defaultCapsules;
+            const filteredCapsules = capsules.filter(c => c.id !== id);
+            localStorage.setItem('raunCapsules', JSON.stringify(filteredCapsules));
+            
+            loadAdminData();
+            showToast('Capsule supprimée.', 'info');
+        }
+        
+        function deleteIntention(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cette intention ?')) return;
+            
+            const intentions = JSON.parse(localStorage.getItem('raunIntentions')) || [];
+            const filteredIntentions = intentions.filter(i => i.id !== id);
+            localStorage.setItem('raunIntentions', JSON.stringify(filteredIntentions));
+            
+            loadAdminData();
+            showToast('Intention supprimée.', 'info');
+        }
+        
+        // Sauvegarde / Restauration
+        function exportData() {
+            const data = {
+                capsules: JSON.parse(localStorage.getItem('raunCapsules')) || defaultCapsules,
+                intentions: JSON.parse(localStorage.getItem('raunIntentions')) || [],
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `raun-rachid-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Données exportées avec succès !', 'success');
+        }
+        
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.capsules) {
+                        localStorage.setItem('raunCapsules', JSON.stringify(data.capsules));
+                    }
+                    if (data.intentions) {
+                        localStorage.setItem('raunIntentions', JSON.stringify(data.intentions));
+                    }
+                    
+                    loadAdminData();
+                    showToast('Données importées avec succès !', 'success');
+                } catch (error) {
+                    showToast('Erreur lors de l\'importation.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function resetData() {
+            if (!confirm('Êtes-vous sûr de vouloir réinitialiser toutes les données ? Cette action est irréversible.')) return;
+            
+            localStorage.removeItem('raunCapsules');
+            localStorage.removeItem('raunIntentions');
+            
+            loadAdminData();
+            showToast('Données réinitialisées.', 'info');
+        }
+        
+        // Toast notifications
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast toast-${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Animation Matrix
+        function createMatrixRain() {
+            const container = document.getElementById('matrix-rain');
+            const characters = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+            
+            setInterval(() => {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDelay = Math.random() * 3 + 's';
+                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                
+                let text = '';
+                for (let i = 0; i < 20; i++) {
+                    text += characters.charAt(Math.floor(Math.random() * characters.length)) + '<br>';
+                }
+                column.innerHTML = text;
+                
+                container.appendChild(column);
+                
+                setTimeout(() => {
+                    if (column.parentNode) {
+                        column.parentNode.removeChild(column);
+                    }
+                }, 5000);
+            }, 200);
+        }
+        
+        // Initialisation
+        createMatrixRain();
+    </script>
+</body>
+</html>
