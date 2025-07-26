@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://42fad56e-69ce-499b-8c0f-b101e80b799d-00-1npygh3ubuyhj.worf.replit.dev/sitemap.xml
+
+# Pages importantes
+Allow: /raun
+Allow: /manifest.json
+Allow: /raun-icon.svg
+
+# Désallowés
+Disallow: /admin
+Disallow: /sw.js

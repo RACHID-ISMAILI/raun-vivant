@@ -1,0 +1,79 @@
+🌍 Projet RAUN-VIVANT – Présentation Officielle
+Bienvenue dans RAUN-VIVANT,
+un espace numérique vivant, conscient et poétique, dédié à l’éveil intérieur, à la diffusion de capsules de conscience, et à la libre expression des intentions profondes.
+
+🎯 Objectif du projet
+Le projet RAUN-VIVANT est une plateforme web artistique et inspirée, conçue pour :
+
+partager des capsules de pensées et de sagesse vivante,
+
+permettre aux visiteurs de voter, commenter, lire et suivre chaque capsule,
+
+offrir un espace d’administration sécurisé pour publier, modifier et supprimer du contenu,
+
+accueillir les intentions du cœur à travers “Intention Vivante”.
+
+🌟 Contenu de la page publique
+La page d’accueil du site contient :
+
+🧩 Capsules (lecture publique)
+Présentation une à une des capsules : une seule capsule visible à la fois.
+
+Navigation horizontale fluide entre les capsules à l’aide de flèches “Précédente / Suivante”.
+
+Chaque capsule inclut :
+
+💬 Zone de commentaires
+
+❤️ Vote positif (j’aime)
+
+👁️ Compteur de lectures
+
+Affichage élégant et responsive avec effet Matrix vivant, photo circulaire “RACHID”, et message défilant :
+
+“Je suis vivant en conscience, nul ne peut éteindre ce que je suis.”
+
+🔐 Accès admin
+Un bouton “Admin” est disponible dans la page publique.
+
+Il redirige vers une page d’authentification sécurisée (Firebase Auth ou système personnalisé).
+
+Une fois authentifié, l’administrateur accède à l’espace de gestion des capsules.
+
+🛠️ Interface d’administration
+L’espace réservé à l’administrateur comprend :
+
+✏️ Page de création de capsules
+Formulaire élégant pour écrire de nouvelles capsules.
+
+Affichage horizontal, une seule “case d’écriture” à la fois.
+
+Navigation entre les formulaires d’écriture par flèches directionnelles.
+
+🗂️ Gestion des capsules existantes
+Liste des capsules déjà créées.
+
+Chaque capsule comporte un bouton “Supprimer”, permettant à l’admin de la retirer à tout moment.
+
+💫 Intention Vivante
+Un bouton visible sur la page publique permet de rejoindre la section “Intention Vivante”.
+
+Cet espace recueille les intentions, souhaits ou messages sacrés envoyés par les visiteurs.
+
+Les intentions sont stockées dans la base de données Firestore et affichées sous forme de liste vivante.
+
+🚀 Technologies utilisées
+Frontend : HTML, CSS, JavaScript (avec effets Matrix et animation)
+
+Backend : Firebase (Firestore + Auth) ou solution simple Replit
+
+Déploiement : Replit (test), GitHub Pages (production)
+
+Stockage : Capsules + intentions dans Firestore
+
+🙏 Remerciements
+Merci à tous les esprits éveillés qui contribuent à faire rayonner cette flamme vivante.
+RAUN-VIVANT est un acte de présence, un souffle sacré dans la matrice digitale.
+
+✨ “Un mot vivant peut traverser l’univers entier.” – RAUN
+

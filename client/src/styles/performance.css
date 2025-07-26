@@ -1,0 +1,99 @@
+/* Performance optimizations for RAUN-RACHID */
+
+/* Critical CSS inlined for faster rendering */
+.critical-font-loading {
+  font-display: swap;
+}
+
+/* Optimize animations with hardware acceleration */
+.matrix-rain,
+.animate-glow,
+.animate-pulse,
+.animate-spin,
+.animate-bounce {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce layout shifts */
+.profile-image-container {
+  aspect-ratio: 1;
+  contain: layout style paint;
+}
+
+/* Optimize scrolling performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Preload critical images */
+.preload-critical {
+  content: url('/icon-192.svg'), url('/icon-512.svg');
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  visibility: hidden;
+}
+
+/* Lazy loading placeholder */
+.lazy-loading {
+  background: linear-gradient(90deg, #001100 25%, #002200 50%, #001100 75%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Optimize text rendering */
+body {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reduce paint complexity */
+.matrix-green {
+  color: #00ff00;
+  /* Using direct color instead of CSS variables for critical text */
+}
+
+/* Critical path CSS for above-the-fold content */
+.hero-section {
+  contain: layout style paint;
+  min-height: 100vh;
+}
+
+/* Optimize Matrix rain animation */
+.matrix-char {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Button optimizations */
+.btn-optimized {
+  contain: layout style paint;
+  transition: transform 0.15s ease-out, background-color 0.15s ease-out;
+}
+
+.btn-optimized:hover {
+  transform: translateY(-1px);
+}
+
+/* Memory optimization for large lists */
+.virtual-list {
+  contain: strict;
+  overflow: hidden;
+}
+
+/* Reduce repaints on hover */
+.hover-optimized {
+  transition: opacity 0.15s ease-out;
+}
+
+.hover-optimized:hover {
+  opacity: 0.8;
+}

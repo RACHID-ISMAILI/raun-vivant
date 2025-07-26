@@ -1,204 +1,295 @@
-import { type Article, type InsertArticle } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { users, capsules, comments, votes, intentions, type User, type InsertUser, type Capsule, type InsertCapsule, type Comment, type InsertComment, type Vote, type InsertVote, type Intention, type InsertIntention } from "@shared/schema";
 
 export interface IStorage {
-  // Articles
-  createArticle(article: InsertArticle): Promise<Article>;
-  getArticle(id: string): Promise<Article | undefined>;
-  getAllArticles(published?: boolean): Promise<Article[]>;
-  updateArticle(id: string, updates: Partial<InsertArticle>): Promise<Article | undefined>;
-  deleteArticle(id: string): Promise<boolean>;
-  searchArticles(query: string, category?: string): Promise<Article[]>;
-  getArticlesByCategory(category: string): Promise<Article[]>;
+  // User methods
+  getUser(username: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
+  
+  // Capsule methods
+  getCapsules(): Promise<Capsule[]>;
+  getCapsule(id: number): Promise<Capsule | undefined>;
+  createCapsule(capsule: any): Promise<Capsule>;
+  updateCapsuleLikes(id: number, likes: number): Promise<void>;
+  updateCapsuleViews(id: number, views: number): Promise<void>;
+  deleteCapsule(id: number): Promise<void>;
+  recordCapsuleView(capsuleId: number, username: string): Promise<boolean>;
+  toggleVote(capsuleId: number, userIdentifier: string, type: string): Promise<void>;
+  incrementViews(capsuleId: number): Promise<void>;
+  
+  // Comment methods
+  getComments(capsuleId: number): Promise<Comment[]>;
+  createComment(comment: any): Promise<Comment>;
+  
+  // Vote methods
+  getVote(capsuleId: number, username: string): Promise<Vote | undefined>;
+  createVote(vote: InsertVote): Promise<Vote>;
+  deleteVote(capsuleId: number, username: string): Promise<void>;
+  
+  // Demo like methods (for click counting)
+  toggleDemoLike(capsuleId: number, userIdentifier: string): Promise<Capsule>;
+  
+  // Intention methods
+  getIntentions(): Promise<Intention[]>;
+  createIntention(intention: any): Promise<Intention>;
+  updateIntention(id: number, updates: any): Promise<Intention | undefined>;
 }
 
 export class MemStorage implements IStorage {
-  private articles: Map<string, Article>;
+  private users: Map<number, User>;
+  private capsules: Map<number, Capsule>;
+  private comments: Map<number, Comment>;
+  private votes: Map<number, Vote>;
+  private intentions: Map<number, Intention>;
+  private capsuleViews: Map<string, Set<string>>; // key: capsuleId, value: set of usernames
+  private demoLikeClicks: Map<string, number>; // key: "capsuleId:userIdentifier", value: click count
+  private currentUserId: number;
+  private currentCapsuleId: number;
+  private currentCommentId: number;
+  private currentVoteId: number;
+  private currentIntentionId: number;
 
   constructor() {
-    this.articles = new Map();
-    this.seedData();
+    this.users = new Map();
+    this.capsules = new Map();
+    this.comments = new Map();
+    this.votes = new Map();
+    this.intentions = new Map();
+    this.capsuleViews = new Map();
+    this.demoLikeClicks = new Map();
+    this.currentUserId = 1;
+    this.currentCapsuleId = 1;
+    this.currentCommentId = 1;
+    this.currentVoteId = 1;
+    this.currentIntentionId = 1;
+    
+    // Initialize with some default capsules
+    this.initializeDefaultCapsules();
   }
 
-  private seedData() {
-    // Add some initial articles for demonstration
-    const sampleArticles: Article[] = [
+  private initializeDefaultCapsules() {
+    const defaultCapsules = [
       {
-        id: "1",
-        title: "Les fondements neurobiologiques de la conscience",
-        content: `# Les fondements neurobiologiques de la conscience
-
-La conscience représente l'un des mystères les plus fascinants de la neuroscience moderne. Cette capacité unique qu'ont les êtres humains d'être conscients de leur propre existence et de leur environnement trouve ses racines dans des mécanismes neurobiologiques complexes.
-
-## Le problème difficile de la conscience
-
-David Chalmers a formulé ce qu'il appelle le "problème difficile de la conscience" : comment les processus physiques du cerveau donnent-ils naissance à l'expérience subjective ? Cette question centrale divise encore la communauté scientifique.
-
-## Les corrélats neuronaux de la conscience
-
-Les recherches modernes se concentrent sur l'identification des corrélats neuronaux de la conscience (CNC). Ces patterns d'activité cérébrale sont associés à des états conscients spécifiques.
-
-### Le rôle du thalamus
-
-Le thalamus joue un rôle crucial dans la génération et le maintien de la conscience. Cette structure agit comme un relais central qui intègre les informations sensorielles avant de les transmettre au cortex.
-
-### Les réseaux corticaux
-
-Les réseaux corticaux, notamment le réseau du mode par défaut, sont essentiels pour la conscience de soi et la réflexion introspective.
-
-## Conclusion
-
-La compréhension des mécanismes neurobiologiques de la conscience reste un défi majeur pour la science du XXIe siècle.`,
-        excerpt: "Exploration des mécanismes neurobiologiques qui sous-tendent la conscience humaine, du thalamus aux réseaux corticaux.",
-        category: "scientific",
-        tags: ["neuroscience", "cerveau", "thalamus", "cortex"],
-        author: "Dr. Marie Dubois",
-        published: true,
-        createdAt: new Date("2024-01-15"),
-        updatedAt: new Date("2024-01-15"),
+        content: "La conscience est comme un océan infini. Chaque pensée n'est qu'une vague à sa surface, mais l'essence demeure éternellement calme et profonde. Nous ne sommes pas nos pensées, nous sommes l'observateur silencieux qui les contemple.",
+        likes: 24,
+        views: 147,
+        createdAt: new Date(),
       },
       {
-        id: "2", 
-        title: "L'expérience subjective : phénoménologie de la conscience",
-        content: `# L'expérience subjective : phénoménologie de la conscience
-
-La phénoménologie, fondée par Edmund Husserl, offre une approche unique pour comprendre la conscience en tant qu'expérience vécue.
-
-## Qu'est-ce que la phénoménologie ?
-
-La phénoménologie est l'étude des structures de l'expérience telle qu'elle est vécue de l'intérieur, sans recours aux explications causales ou aux théories scientifiques externes.
-
-## L'intentionnalité de la conscience
-
-Selon Franz Brentano et Edmund Husserl, toute conscience est conscience de quelque chose. Cette propriété, appelée intentionnalité, caractérise fondamentalement l'expérience consciente.
-
-### Les actes intentionnels
-
-- **Perception** : conscience d'objets sensibles
-- **Souvenir** : conscience d'événements passés  
-- **Imagination** : conscience d'objets possibles
-- **Jugement** : conscience de propositions
-
-## La réduction phénoménologique
-
-La méthode de l'épochè permet de "mettre entre parenthèses" nos présupposés sur le monde pour se concentrer sur l'expérience pure.
-
-## Implications pour la compréhension de la conscience
-
-Cette approche révèle des aspects de la conscience souvent négligés par les neurosciences : la temporalité, l'incarnation, et l'intersubjectivité.`,
-        excerpt: "Une approche phénoménologique de la conscience, explorant l'intentionnalité et l'expérience subjective.",
-        category: "philosophical",
-        tags: ["phénoménologie", "Husserl", "intentionnalité", "subjectivité"],
-        author: "Prof. Jean-Luc Martin",
-        published: true,
-        createdAt: new Date("2024-01-14"),
-        updatedAt: new Date("2024-01-14"),
+        content: "L'éveil n'est pas une destination mais un chemin. Chaque moment de présence authentique est une victoire contre l'illusion. Nous sommes déjà ce que nous cherchons à devenir.",
+        likes: 18,
+        views: 98,
+        createdAt: new Date(),
       },
       {
-        id: "3",
-        title: "Conscience et intelligence artificielle : vers une IA consciente ?",
-        content: `# Conscience et intelligence artificielle : vers une IA consciente ?
-
-L'avènement de l'intelligence artificielle soulève des questions profondes sur la nature de la conscience et la possibilité de créer des machines conscientes.
-
-## Le test de Turing et ses limites
-
-Alan Turing proposait un test comportemental pour évaluer l'intelligence des machines. Mais ce test suffit-il à déterminer si une machine est consciente ?
-
-## Les approches computationnelles de la conscience
-
-### Théorie de l'information intégrée (IIT)
-
-Giulio Tononi propose que la conscience corresponde à l'information intégrée (Φ) d'un système. Cette approche mathématique pourrait s'appliquer aux systèmes artificiels.
-
-### Global Workspace Theory
-
-Bernard Baars suggère que la conscience émerge d'un "espace de travail global" où les informations sont partagées entre différents modules cognitifs.
-
-## Les défis éthiques
-
-Si des machines conscientes voient le jour, quelles seraient nos obligations morales envers elles ? Cette question devient de plus en plus pressante avec les progrès de l'IA.
-
-## Conclusion
-
-La création d'une IA consciente reste hypothétique, mais les recherches actuelles nous rapprochent de cette possibilité révolutionnaire.`,
-        excerpt: "Analyse des possibilités et défis liés à la création d'une intelligence artificielle consciente.",
-        category: "scientific",
-        tags: ["IA", "conscience artificielle", "Turing", "éthique"],
-        author: "Dr. Sophie Chen",
-        published: true,
-        createdAt: new Date("2024-01-13"),
-        updatedAt: new Date("2024-01-13"),
-      }
+        content: "Dans le silence de l'esprit, toutes les réponses se révèlent. Ne cherchez pas à comprendre avec le mental, mais à ressentir avec le cœur. La vérité ne se pense pas, elle se vit.",
+        likes: 31,
+        views: 203,
+        createdAt: new Date(),
+      },
     ];
 
-    sampleArticles.forEach(article => {
-      this.articles.set(article.id, article);
+    defaultCapsules.forEach((capsule) => {
+      const id = this.currentCapsuleId++;
+      this.capsules.set(id, { ...capsule, id });
     });
   }
 
-  async createArticle(insertArticle: InsertArticle): Promise<Article> {
-    const id = randomUUID();
-    const now = new Date();
-    const article: Article = { 
-      ...insertArticle, 
+  async getUser(username: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(user => user.username === username);
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const id = this.currentUserId++;
+    const user: User = { ...insertUser, id };
+    this.users.set(id, user);
+    return user;
+  }
+
+  async getCapsules(): Promise<Capsule[]> {
+    return Array.from(this.capsules.values()).sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+
+  async getCapsule(id: number): Promise<Capsule | undefined> {
+    return this.capsules.get(id);
+  }
+
+  async createCapsule(insertCapsule: any): Promise<Capsule> {
+    const id = this.currentCapsuleId++;
+    const capsule: Capsule = {
+      content: insertCapsule.content,
       id,
-      createdAt: now,
-      updatedAt: now
+      likes: insertCapsule.likes || 0,
+      views: insertCapsule.views || 0,
+      createdAt: insertCapsule.createdAt || new Date(),
     };
-    this.articles.set(id, article);
-    return article;
+    this.capsules.set(id, capsule);
+    return capsule;
   }
 
-  async getArticle(id: string): Promise<Article | undefined> {
-    return this.articles.get(id);
-  }
-
-  async getAllArticles(published?: boolean): Promise<Article[]> {
-    const articles = Array.from(this.articles.values());
-    if (published !== undefined) {
-      return articles.filter(article => article.published === published);
+  async updateCapsuleLikes(id: number, likes: number): Promise<void> {
+    const capsule = this.capsules.get(id);
+    if (capsule) {
+      this.capsules.set(id, { ...capsule, likes });
     }
-    return articles.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  async updateArticle(id: string, updates: Partial<InsertArticle>): Promise<Article | undefined> {
-    const article = this.articles.get(id);
-    if (!article) return undefined;
+  async updateCapsuleViews(id: number, views: number): Promise<void> {
+    const capsule = this.capsules.get(id);
+    if (capsule) {
+      this.capsules.set(id, { ...capsule, views });
+    }
+  }
+
+  async recordCapsuleView(capsuleId: number, username: string): Promise<boolean> {
+    const key = capsuleId.toString();
     
-    const updatedArticle = { 
-      ...article, 
-      ...updates, 
-      updatedAt: new Date() 
+    // Initialize the set if it doesn't exist
+    if (!this.capsuleViews.has(key)) {
+      this.capsuleViews.set(key, new Set());
+    }
+    
+    const viewers = this.capsuleViews.get(key)!;
+    
+    // Check if this user has already viewed this capsule
+    if (viewers.has(username)) {
+      return false; // Already viewed, no increment needed
+    }
+    
+    // Add user to viewers and increment view count
+    viewers.add(username);
+    const newViewCount = viewers.size;
+    
+    // Update the capsule's view count
+    await this.updateCapsuleViews(capsuleId, newViewCount);
+    
+    return true; // New view recorded
+  }
+
+  async deleteCapsule(id: number): Promise<void> {
+    this.capsules.delete(id);
+  }
+
+  async toggleVote(capsuleId: number, userIdentifier: string, type: string): Promise<void> {
+    const key = `${capsuleId}:${userIdentifier}`;
+    const currentClicks = this.demoLikeClicks.get(key) || 0;
+    const newClicks = currentClicks + 1;
+    this.demoLikeClicks.set(key, newClicks);
+    
+    // Calculate total likes for this capsule (sum of all user likes)
+    const totalLikes = Array.from(this.demoLikeClicks.entries())
+      .filter(([k]) => k.startsWith(`${capsuleId}:`))
+      .reduce((sum, [, clicks]) => sum + (clicks % 2), 0); // Only count odd clicks
+    
+    await this.updateCapsuleLikes(capsuleId, totalLikes);
+  }
+
+  async incrementViews(capsuleId: number): Promise<void> {
+    const capsule = this.capsules.get(capsuleId);
+    if (capsule) {
+      await this.updateCapsuleViews(capsuleId, capsule.views + 1);
+    }
+  }
+
+  async getComments(capsuleId: number): Promise<Comment[]> {
+    return Array.from(this.comments.values()).filter(comment => comment.capsuleId === capsuleId);
+  }
+
+  async createComment(insertComment: any): Promise<Comment> {
+    const id = this.currentCommentId++;
+    const comment: Comment = {
+      ...insertComment,
+      id,
+      createdAt: insertComment.createdAt || new Date(),
     };
-    this.articles.set(id, updatedArticle);
-    return updatedArticle;
+    this.comments.set(id, comment);
+    return comment;
   }
 
-  async deleteArticle(id: string): Promise<boolean> {
-    return this.articles.delete(id);
+  async createIntention(insertIntention: any): Promise<Intention> {
+    const id = this.currentIntentionId++;
+    const intention: Intention = {
+      content: insertIntention.content,
+      author: insertIntention.author,
+      id,
+      createdAt: insertIntention.createdAt || new Date(),
+    };
+    this.intentions.set(id, intention);
+    return intention;
   }
 
-  async searchArticles(query: string, category?: string): Promise<Article[]> {
-    const articles = Array.from(this.articles.values());
-    const lowercaseQuery = query.toLowerCase();
+  async updateIntention(id: number, updates: any): Promise<Intention | undefined> {
+    const intention = this.intentions.get(id);
+    if (!intention) return undefined;
     
-    return articles.filter(article => {
-      const matchesQuery = article.title.toLowerCase().includes(lowercaseQuery) ||
-                          article.content.toLowerCase().includes(lowercaseQuery) ||
-                          article.excerpt.toLowerCase().includes(lowercaseQuery) ||
-                          article.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery));
-      
-      const matchesCategory = !category || article.category === category;
-      
-      return matchesQuery && matchesCategory && article.published;
-    }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const updatedIntention = { ...intention, ...updates };
+    this.intentions.set(id, updatedIntention);
+    return updatedIntention;
   }
 
-  async getArticlesByCategory(category: string): Promise<Article[]> {
-    const articles = Array.from(this.articles.values());
-    return articles.filter(article => article.category === category && article.published)
-                   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+
+  async getVote(capsuleId: number, username: string): Promise<Vote | undefined> {
+    return Array.from(this.votes.values()).find(
+      vote => vote.capsuleId === capsuleId && vote.username === username
+    );
+  }
+
+  async createVote(insertVote: InsertVote): Promise<Vote> {
+    const id = this.currentVoteId++;
+    const vote: Vote = { ...insertVote, id };
+    this.votes.set(id, vote);
+    return vote;
+  }
+
+  async deleteVote(capsuleId: number, username: string): Promise<void> {
+    const vote = Array.from(this.votes.entries()).find(
+      ([_, v]) => v.capsuleId === capsuleId && v.username === username
+    );
+    if (vote) {
+      this.votes.delete(vote[0]);
+    }
+  }
+
+  async getIntentions(): Promise<Intention[]> {
+    return Array.from(this.intentions.values()).sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }
+
+
+
+  // Demo like system with toggle per user
+  async toggleDemoLike(capsuleId: number, userIdentifier: string): Promise<Capsule> {
+    const key = `${capsuleId}:${userIdentifier}`;
+    const currentClicks = this.demoLikeClicks.get(key) || 0;
+    const newClicks = currentClicks + 1;
+    this.demoLikeClicks.set(key, newClicks);
+
+    // Calculate total likes for this capsule by counting all users with odd clicks
+    let totalLikes = 0;
+    for (const [clickKey, clicks] of this.demoLikeClicks.entries()) {
+      const [clickCapsuleId] = clickKey.split(':');
+      if (parseInt(clickCapsuleId) === capsuleId && clicks % 2 === 1) {
+        totalLikes++;
+      }
+    }
+
+    // Add the original likes from initialization
+    const capsule = this.capsules.get(capsuleId);
+    if (capsule) {
+      const originalLikes = this.getOriginalLikes(capsuleId);
+      await this.updateCapsuleLikes(capsuleId, originalLikes + totalLikes);
+    }
+
+    return this.capsules.get(capsuleId)!;
+  }
+
+  private getOriginalLikes(capsuleId: number): number {
+    // Return original likes from initialization
+    const originalLikes = [24, 18, 31]; // Corresponds to capsule IDs 1, 2, 3
+    return originalLikes[capsuleId - 1] || 0;
   }
 }
 

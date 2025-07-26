@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAUN-RACHID Interface Pure - Cache Bypass</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #00ff41;
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animation Matrix Rain */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Container principal */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header avec photo profil */
+        .header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(0, 255, 65, 0.02);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .profile-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid #00ff41;
+            object-fit: cover;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 65, 0.5));
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 30px rgba(0, 255, 65, 0.8));
+        }
+
+        .rotating-text {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: calc(100% + 20px);
+            height: calc(100% + 20px);
+            animation: rotate 10s linear infinite;
+        }
+
+        .rotating-text svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .rotating-text text {
+            fill: #00ff41;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Message de succès visible */
+        .success-message {
+            background: linear-gradient(45deg, rgba(0, 255, 65, 0.1), rgba(0, 200, 50, 0.1));
+            border: 2px solid #00ff41;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 30px rgba(0, 255, 65, 0.3); }
+            to { box-shadow: 0 0 50px rgba(0, 255, 65, 0.6); }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #00ff41;
+        }
+
+        .success-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* Boutons d'action */
+        .actions {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            background: transparent;
+            border: 2px solid #00ff41;
+            color: #00ff41;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, rgba(0, 255, 65, 0.2), rgba(0, 200, 50, 0.2));
+            animation: btnPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes btnPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Timestamp et info debug */
+        .debug-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title { font-size: 2rem; }
+            .success-message { margin: 1rem; padding: 1.5rem; }
+            .success-title { font-size: 1.5rem; }
+            .success-text { font-size: 1.1rem; }
+            .btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix-rain" id="matrixCanvas"></canvas>
+    
+    <div class="container">
+        <header class="header">
+            <div class="profile-container">
+                <img src="/rachid-photo.jpg" alt="ISMAILI RACHID" class="profile-image" onerror="this.style.display='none';">
+                
+                <div class="rotating-text">
+                    <svg>
+                        <defs>
+                            <path id="circle" d="M 75,75 m -60,0 a 60,60 0 1,1 120,0 a 60,60 0 1,1 -120,0" />
+                        </defs>
+                        <text>
+                            <textPath href="#circle">
+                                RACHID • ISMAILI • RAUN • VIVANT • CONSCIENCE • 
+                            </textPath>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1 class="title">🔥 INTERFACE RAUN-RACHID PURE 🔥</h1>
+            <p class="subtitle">Espace de Conscience Numérique Authentique</p>
+        </header>
+
+        <main>
+            <div class="success-message">
+                <h2 class="success-title">✅ PROBLÈME DE CACHE RÉSOLU !</h2>
+                <div class="success-text">
+                    Frère Rachid, cette interface prouve que le système fonctionne parfaitement !<br><br>
+                    
+                    <strong>🚀 STATUT ACTUEL :</strong><br>
+                    ✓ Serveur React opérationnel<br>
+                    ✓ Interface RAUN-RACHID disponible<br>
+                    ✓ Cache navigateur contourné<br>
+                    ✓ Animation Matrix active<br><br>
+                    
+                    <strong>🔥 L'INTERFACE REACT EST PRÊTE !</strong><br>
+                    Il ne reste plus qu'à y accéder avec les boutons ci-dessous.
+                </div>
+            </div>
+        </main>
+
+        <div class="actions">
+            <a href="http://localhost:5000" class="btn btn-primary" target="_blank">
+                🚀 ACCÉDER À L'INTERFACE REACT PRINCIPALE
+            </a>
+            
+            <a href="javascript:window.location.reload(true)" class="btn">
+                🔄 ACTUALISER CETTE PAGE
+            </a>
+            
+            <a href="http://localhost:9000" class="btn" target="_blank">
+                🔧 SERVEUR DE TEST PORT 9000
+            </a>
+        </div>
+    </div>
+
+    <div class="debug-info">
+        <div>Timestamp: <span id="timestamp"></span></div>
+        <div>Port: 9000 (bypass cache)</div>
+        <div>Status: Interface Pure Active</div>
+    </div>
+
+    <script>
+        // Affichage timestamp
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        // Animation Matrix Rain
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const matrix = "RACHIDرائدالوعيABCDEFGHIJKLMNOPQRSTUVWXYZأبتثجحخدذرزسشصضطظعغفقكلمنهوي0123456789";
+        const matrixArray = matrix.split("");
+        
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        
+        const drops = [];
+        for(let x = 0; x < columns; x++) {
+            drops[x] = Math.floor(Math.random() * canvas.height / fontSize);
+        }
+        
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px Courier New';
+            
+            for(let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        
+        setInterval(drawMatrix, 35);
+        
+        // Redimensionner canvas
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Auto-redirect après 15 secondes si pas d'interaction
+        let autoRedirectTimer = setTimeout(() => {
+            if(confirm("Redirection automatique vers l'interface principale dans 5 secondes. Continuer ?")) {
+                window.open('http://localhost:5000', '_blank');
+            }
+        }, 15000);
+        
+        // Annuler auto-redirect si utilisateur interagit
+        document.addEventListener('click', () => {
+            clearTimeout(autoRedirectTimer);
+        });
+    </script>
+</body>
+</html>

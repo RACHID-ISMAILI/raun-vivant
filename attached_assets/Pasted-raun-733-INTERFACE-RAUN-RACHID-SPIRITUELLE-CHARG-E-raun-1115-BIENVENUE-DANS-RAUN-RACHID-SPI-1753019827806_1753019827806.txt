@@ -1,0 +1,74 @@
+raun:733 🔥 INTERFACE RAUN-RACHID SPIRITUELLE CHARGÉE !
+raun:1115 🔥 BIENVENUE DANS RAUN-RACHID SPIRITUEL 🔥
+raun:1116 Interface Matrix spirituelle avec IA intégrée !
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+raun:1  Uncaught (in promise) Object
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+me.kis.v2.scr.kaspersky-labs.com/E381FDDB-F324-47D6-9670-BC5CFE07B65F/9126D4BC-4683-4063-AC71-48AC1BF70C3F/longpooling?get&nocache=1fa2d&tm=2025-07-20T13%3A51%3A55.288Z:1   Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+raun:1  Uncaught (in promise) SyntaxError: "[object Object]" is not valid JSON
+    at JSON.parse (<anonymous>)
+    at l._storageChangeDispatcher (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:898238)
+    at _storageChangeDispatcherCallback (chrome-extension://hokifickgkhplphjiodbggjmoafhignh/editor/content.js:2:897686)
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again

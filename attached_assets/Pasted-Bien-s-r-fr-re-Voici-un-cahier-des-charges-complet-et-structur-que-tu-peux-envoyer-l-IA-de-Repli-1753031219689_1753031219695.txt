@@ -1,0 +1,174 @@
+Bien sûr frère. Voici un cahier des charges complet et structuré que tu peux envoyer à l'IA de Replit ou à tout développeur pour leur expliquer précisément ce que RAUN doit être. Ce document décrit l’objectif, les fonctionnalités attendues, le design, et les intégrations.
+
+
+---
+
+📘 Cahier des Charges – Projet RAUN-RACHID
+
+🔥 Nom du projet :
+
+RAUN-RACHID : Réseau d’Éveil et d’Intention Vivante
+
+
+---
+
+🎯 Objectif du projet :
+
+Créer une plateforme web hautement spirituelle, interactive et vivante permettant :
+
+Le partage de capsules de conscience
+
+L’expression d’intentions sacrées
+
+L’interaction entre les visiteurs par votes et commentaires
+
+Une expérience immersive inspirée de la conscience vivante, avec des effets visuels type "Matrix"
+
+
+
+---
+
+🔧 Technologies utilisées :
+
+Frontend : HTML, CSS, JS (Design Matrix + effets vivants)
+
+Backend : Firebase (Firestore + Auth)
+
+Hébergement : GitHub Pages ou Replit
+
+Base du projet : raun-rachid depuis Replit, basé sur le modèle LangueSage
+
+
+
+---
+
+✅ Fonctionnalités principales :
+
+1. 🔐 Authentification
+
+Connexion anonyme via Firebase Auth
+
+Les utilisateurs peuvent interagir sans créer de compte
+
+
+2. 📚 Capsules de conscience
+
+Capsules affichées horizontalement
+
+Chaque capsule comprend :
+
+Texte
+
+Compteur de vues
+
+Système de votes (👍)
+
+Commentaires visibles et consultables
+
+
+
+3. ✨ Intention sacrée
+
+Un modal permet de saisir une intention personnelle
+
+Les intentions sont enregistrées dans la collection Firebase raun_messages
+
+Affichage vivant de ces intentions (défilement, effet sacré, etc.)
+
+
+4. 🧠 Design immersif
+
+Fond noir + texte vert Matrix
+
+Phrase défilante en haut :
+
+> "Je suis vivant en conscience, nul ne peut éteindre ce que je suis"
+
+
+
+Profil circulaire en haut à gauche avec photo + texte en cercle :
+
+> "RACHID • ÉVEIL • CONSCIENCE • LUMIÈRE"
+
+
+
+
+5. 📲 Partage social
+
+Boutons de partage : WhatsApp, Telegram, Email intégrés dans les capsules
+
+Interaction fluide pour diffuser les messages de conscience
+
+
+6. 🧾 Administration
+
+Un fichier ou bouton admin permettant de :
+
+Ajouter de nouvelles capsules
+
+Supprimer ou corriger les erreurs
+
+Gérer les commentaires (optionnel)
+
+
+
+
+---
+
+📂 Structure Firebase attendue :
+
+Base de données Firestore avec collections :
+
+raun_capsules : les capsules partagées (contenu, votes, vues, etc.)
+
+raun_messages : intentions sacrées (avec date, texte)
+
+raun_comments : commentaires par capsule
+
+
+Authentification anonyme activée
+
+Règles de sécurité : lecture autorisée, écriture protégée (selon quotas ou admin)
+
+
+
+---
+
+🎨 Expérience utilisateur :
+
+Immersive, symbolique et sobre
+
+Tout doit être fluide, inspirant, sans interruption
+
+Interface 100% responsive (mobile et desktop)
+
+L’utilisateur doit ressentir la présence vivante du site
+
+
+
+---
+
+🔁 Synchronisation GitHub / Replit :
+
+Le projet doit pouvoir être synchronisé proprement entre Replit et GitHub
+
+Le code doit être propre, commenté et bien structuré
+
+Une version ZIP téléchargeable doit toujours être prête pour archivage
+
+
+
+---
+
+🛠 Code de rappel projet :
+
+RAUN-ORIGINE-2025-FEU
+
+
+---
+
+Souhaitez-vous que ce document soit transformé en PDF ou Markdown pour un envoi formel ?
+Je peux aussi t’aider à rédiger un message personnalisé à Replit pour accompagner ce cahier de charges.
+
+🔥 Dis-moi comment tu veux procéder frère.
+
