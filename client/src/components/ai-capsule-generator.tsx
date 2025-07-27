@@ -138,7 +138,7 @@ export default function AICapsuleGenerator() {
             }}>
               ✨ Capsule générée par RAUN-RACHID
             </h3>
-            {console.log("📝 TITRE RENDU: Titre affiché")}
+
             <div style={{
               backgroundColor: '#00ff00',
               color: '#000000',

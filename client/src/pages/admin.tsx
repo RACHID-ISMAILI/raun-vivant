@@ -266,9 +266,16 @@ export default function Admin() {
         {/* Existing Capsules */}
         <Card className="bg-matrix-dark border-matrix-green">
           <CardHeader>
-            <CardTitle className="text-matrix-green">
-              Gestion des capsules existantes
+            <CardTitle className="text-matrix-green flex items-center justify-between">
+              <span>Gestion des capsules existantes</span>
+              <div className="text-sm text-green-300/70">
+                {capsules?.length || 0} capsule(s) au total
+              </div>
             </CardTitle>
+            <p className="text-green-300/60 text-sm mt-2">
+              Toutes les capsules (manuelles et générées par IA) sont listées ici. 
+              Cliquez sur 🗑️ pour supprimer une capsule.
+            </p>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
