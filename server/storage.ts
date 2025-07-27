@@ -269,7 +269,8 @@ export class MemStorage implements IStorage {
 
     // Calculate total likes for this capsule by counting all users with odd clicks
     let totalLikes = 0;
-    for (const [clickKey, clicks] of this.demoLikeClicks.entries()) {
+    for (const entry of Array.from(this.demoLikeClicks.entries())) {
+      const [clickKey, clicks] = entry;
       const [clickCapsuleId] = clickKey.split(':');
       if (parseInt(clickCapsuleId) === capsuleId && clicks % 2 === 1) {
         totalLikes++;

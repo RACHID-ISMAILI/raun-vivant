@@ -37,9 +37,7 @@ async function startServer() {
       console.log(`🔥 PORT: ${PORT}`);
       console.log(`🔥 URL: http://localhost:${PORT}`);
       console.log("🔥 ARCHITECTURE CLIENT/SERVEUR MODERNE");
-      console.log("🔥 ZONES D'ÉCRITURE SCIENCES & HUMANITÉ AJOUTÉES");
-      console.log("🔥 SYNCHRONISATION CAPSULES ADMIN/PUBLIC CORRIGÉE");
-      console.log("🔥 INTERFACE SPIRITUELLE COMPLÈTE");
+      console.log("🔥 SÉCURITÉ RENFORCÉE");
       console.log("================================================================================");
     });
 
