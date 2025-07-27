@@ -73,6 +73,72 @@ img {
   --deep-black: hsl(0, 0%, 0%);
 }
 
+/* Animations Matrix personnalisées */
+@keyframes glow {
+  0%, 100% { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+  50% { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor; }
+}
+
+@keyframes typing {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.7; }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-typing {
+  animation: typing 3s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+}
+
+/* Effet Matrix pour les bordures */
+.matrix-border {
+  background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 0, 0.3) 50%, transparent 70%);
+  animation: matrix-scan 3s linear infinite;
+}
+
+@keyframes matrix-scan {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+/* Scrollbar Matrix style */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 0, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 0, 0.8);
+}
+
+/* Styles pour les classes Tailwind personnalisées */
+.bg-matrix-bg { background-color: var(--matrix-bg); }
+.bg-matrix-dark { background-color: var(--matrix-dark); }
+.text-matrix-green { color: var(--matrix-green); }
+.border-matrix-green { border-color: var(--matrix-green); }
+.hover\\:bg-matrix-green:hover { background-color: var(--matrix-green); }
+.hover\\:text-matrix-bg:hover { color: var(--matrix-bg); }
+
 @layer base {
   * {
     @apply border-border;
