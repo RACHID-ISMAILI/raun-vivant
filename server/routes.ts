@@ -2,10 +2,10 @@ import express, { type Request, Response } from "express";
 import type { Express } from "express";
 import { storage } from "./storage";
 
-// Session interface extension
-declare module 'express-serve-static-core' {
-  interface Request {
-    session?: any;
+// Session interface extension  
+declare module 'express-session' {
+  interface SessionData {
+    userId?: string;
   }
 }
 
@@ -48,7 +48,7 @@ export async function registerRoutes(app: Express) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
 
-      req.session = { userId: username };
+      req.session.userId = username;
       res.json({ success: true, user: { username } });
     } catch (error) {
       console.error('Login error:', error);
@@ -57,7 +57,11 @@ export async function registerRoutes(app: Express) {
   });
 
   app.post("/api/auth/logout", (req: Request, res: Response) => {
-    req.session = null;
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Session destroy error:', err);
+      }
+    });
     res.json({ success: true });
   });
 

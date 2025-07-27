@@ -106,7 +106,7 @@ export default function Admin() {
               Interface d'Administration
             </h1>
             <p className="text-matrix-green/70 mt-2">
-              Bienvenue, {currentUser.username}
+              Bienvenue, {(currentUser as any)?.user?.username || 'Administrateur'}
             </p>
           </div>
           <div className="flex space-x-4">

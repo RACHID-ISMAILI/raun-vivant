@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import { createServer } from "http";
 import { registerRoutes } from "./routes";
 import { setupVite, log } from "./vite";
@@ -13,6 +14,18 @@ app.use((req, res, next) => {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   next();
 });
+
+// Session configuration
+app.use(session({
+  secret: 'raun-rachid-secret-key-for-sessions',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
