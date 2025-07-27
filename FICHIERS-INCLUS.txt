@@ -1,0 +1,56 @@
+RAUN-RACHID - Liste des Fichiers Inclus dans le Téléchargement
+
+📁 STRUCTURE COMPLETE DU PROJET :
+
+ROOT/
+├── 📄 package.json                    # Dépendances npm
+├── 📄 tsconfig.json                   # Config TypeScript
+├── 📄 vite.config.ts                  # Config build Vite
+├── 📄 drizzle.config.ts               # Config base de données
+├── 📄 tailwind.config.ts              # Config design Tailwind
+├── 📄 postcss.config.js               # Config PostCSS
+├── 📄 components.json                 # Config shadcn/ui
+├── 📄 .env.example                    # Template environnement
+├── 📄 .gitignore                      # Fichiers Git exclus
+├── 📄 README-GITHUB.md                # Guide GitHub complet
+├── 📄 INSTALLATION-WINDOWS.md         # Guide Windows détaillé
+├── 📄 TELECHARGER-PROJET.md           # Instructions téléchargement
+├── 📄 replit.md                       # Documentation technique
+├── 📄 index.html                      # Page HTML principale
+└── 📄 FICHIERS-INCLUS.txt             # Cette liste
+
+📁 CLIENT/ (Interface React)
+├── src/
+│   ├── 📄 main.tsx                    # Point d'entrée React
+│   ├── 📄 App.tsx                     # Composant principal
+│   ├── 📄 index.css                   # Styles globaux Matrix
+│   ├── components/
+│   │   ├── 📄 ai-capsule-generator.tsx # Générateur IA
+│   │   ├── 📄 matrix-rain.tsx         # Animation Matrix
+│   │   └── ui/ (Composants shadcn)
+│   ├── pages/
+│   │   ├── 📄 raun-home.tsx           # Page principale
+│   │   └── 📄 admin.tsx               # Interface admin
+│   └── lib/
+│       ├── 📄 queryClient.ts          # Client API
+│       ├── 📄 simple-toast.ts         # Notifications
+│       └── 📄 utils.ts                # Utilitaires
+
+📁 SERVER/ (Backend Express)
+├── 📄 index.ts                        # Serveur principal
+├── 📄 routes.ts                       # Routes API
+├── 📄 storage.ts                      # Interface base de données
+└── 📄 vite.ts                         # Intégration Vite
+
+📁 SHARED/ (Types partagés)
+└── 📄 schema.ts                       # Schéma Drizzle + Types
+
+📁 PUBLIC/ (Assets statiques)
+├── 🖼️ rachid-photo.jpg                # Photo personnelle
+├── 📄 raun-icon.svg                   # Icône du site
+├── 📄 robots.txt                      # SEO robots
+└── 📄 sitemap.xml                     # SEO sitemap
+
+TOTAL : ~50 fichiers essentiels pour installation complète
+
+🔥 PRÊT POUR TÉLÉCHARGEMENT ET INSTALLATION ! 🔥
