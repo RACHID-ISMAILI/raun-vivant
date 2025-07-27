@@ -27,6 +27,52 @@ const openai = {
   }
 };
 
+// Générateur de contenu spirituel basé sur les thèmes
+function generateSpiritualContent(theme: string): string {
+  const spiritualTemplates = {
+    "éveil": [
+      "L'éveil n'est pas une destination mais un chemin. Chaque moment de présence authentique est une victoire contre l'illusion. Nous sommes déjà ce que nous cherchons à devenir.",
+      "Dans l'éveil, nous découvrons que nous ne sommes pas séparés du divin - nous en sommes l'expression vivante. Chaque respiration est une prière, chaque battement de cœur une affirmation de l'unité."
+    ],
+    "amour": [
+      "L'amour véritable transcende toutes les formes. Il ne demande rien, ne juge personne, et illumine tout ce qu'il touche. Soyez cet amour que vous cherchez dans le monde.",
+      "Dans l'amour inconditionnel, nous trouvons la clé de notre libération. Aimez sans attente, donnez sans condition, et recevez avec gratitude tout ce que la vie vous offre."
+    ],
+    "conscience": [
+      "La conscience est comme un océan infini. Chaque pensée n'est qu'une vague à sa surface, mais l'essence demeure éternellement calme et profonde. Nous ne sommes pas nos pensées, nous sommes l'observateur silencieux qui les contemple.",
+      "En cultivant la conscience, nous découvrons que nous sommes à la fois l'observateur et l'observé, le rêveur et le rêve. Cette unité révèle la véritable nature de notre être."
+    ],
+    "paix": [
+      "La paix intérieure ne dépend d'aucune circonstance extérieure. Elle réside en permanence au cœur de votre être, attendant simplement d'être reconnue et embrassée.",
+      "Dans le silence de l'esprit paisible, toutes les réponses se révèlent. La paix n'est pas l'absence de tempête, mais la tranquillité au centre de celle-ci."
+    ],
+    "lumière": [
+      "Vous êtes la lumière que vous cherchez dans l'obscurité. Cette lumière divine brille en permanence en vous, attendant que vous arrêtiez de la chercher ailleurs pour la reconnaître en vous.",
+      "La lumière de la conscience illumine tout ce qu'elle touche. Soyez cette lumière pour vous-même et pour les autres, et regardez le monde se transformer."
+    ],
+    "default": [
+      "Dans le silence de l'esprit, toutes les réponses se révèlent. Ne cherchez pas à comprendre avec le mental, mais à ressentir avec le cœur. La vérité ne se pense pas, elle se vit.",
+      "Chaque moment présent est une porte vers l'infini. Quand nous cessons de résister à ce qui est, nous découvrons la beauté parfaite de l'existence telle qu'elle se déploie.",
+      "L'univers conspire en votre faveur. Chaque expérience, même difficile, vous guide vers une compréhension plus profonde de votre véritable nature divine."
+    ]
+  };
+
+  // Trouver le thème correspondant ou utiliser le thème par défaut
+  const lowerTheme = theme.toLowerCase();
+  let selectedTemplates = spiritualTemplates.default;
+
+  for (const [key, templates] of Object.entries(spiritualTemplates)) {
+    if (lowerTheme.includes(key) && key !== 'default') {
+      selectedTemplates = templates;
+      break;
+    }
+  }
+
+  // Sélectionner aléatoirement un template
+  const randomIndex = Math.floor(Math.random() * selectedTemplates.length);
+  return selectedTemplates[randomIndex];
+}
+
 export async function registerRoutes(app: Express) {
   // === API ROUTES UNIQUEMENT ===
   
@@ -81,6 +127,33 @@ export async function registerRoutes(app: Express) {
     } catch (error) {
       console.error('Error fetching capsules:', error);
       res.status(500).json({ message: "Failed to fetch capsules" });
+    }
+  });
+
+  // Route pour générer des capsules avec IA
+  app.post("/api/capsules/generate", async (req: Request, res: Response) => {
+    if (!req.session?.userId) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    try {
+      const { theme } = req.body;
+      if (!theme) {
+        return res.status(400).json({ message: "Theme is required" });
+      }
+
+      // Génération de contenu spirituel basé sur le thème
+      const spiritualContent = generateSpiritualContent(theme);
+      
+      // Créer et sauvegarder la capsule
+      const capsule = await storage.createCapsule({
+        content: spiritualContent
+      });
+
+      res.json(capsule);
+    } catch (error) {
+      console.error('Error generating capsule:', error);
+      res.status(500).json({ message: "Failed to generate capsule" });
     }
   });
 

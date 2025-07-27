@@ -119,11 +119,6 @@ export default function AICapsuleGenerator() {
 
       {/* Generated Capsule Display */}
       {generatedCapsule && (
-        <>
-          {console.log("🎯 RENDU: generatedCapsule existe:", generatedCapsule)}
-        </>
-      )}
-      {generatedCapsule && (
         <div style={{
           backgroundColor: '#1a1a1a',
           border: '2px solid #00ff00',
