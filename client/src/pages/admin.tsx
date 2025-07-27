@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash2, Plus, ChevronLeft, ChevronRight, LogOut } from "lucide-react";
+import { Trash2, Plus, ChevronLeft, ChevronRight, LogOut, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/lib/simple-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -11,13 +12,119 @@ import { useLocation } from "wouter";
 import MatrixRain from "@/components/matrix-rain";
 import AICapsuleGenerator from "@/components/ai-capsule-generator";
 
+// Composant de connexion admin
+function AdminLoginInterface({ onLogin }: { onLogin: (user: any) => void }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!username || !password) {
+      toast.error("Veuillez remplir tous les champs");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        onLogin(data);
+        toast.success("Connexion réussie !");
+      } else {
+        toast.error("Identifiants incorrects");
+      }
+    } catch (error) {
+      toast.error("Erreur de connexion");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-black text-green-400 min-h-screen font-mono overflow-hidden">
+      <MatrixRain />
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-6">
+        <Card className="w-full max-w-md bg-black/80 border-2 border-green-400 shadow-2xl backdrop-blur-sm">
+          <CardHeader className="text-center">
+            <div className="flex items-center justify-center mb-4">
+              <Lock className="w-12 h-12 text-green-400 animate-pulse" />
+            </div>
+            <CardTitle className="text-2xl text-green-400 animate-glow">
+              Administration RAUN-RACHID
+            </CardTitle>
+            <p className="text-green-300/70 text-sm">
+              Authentification requise pour accéder au panel
+            </p>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-green-300 text-sm mb-2">
+                  Nom d'utilisateur
+                </label>
+                <Input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="rachid"
+                  className="bg-black/80 border-green-400 text-green-100 placeholder:text-green-300/50"
+                  disabled={isLoading}
+                />
+              </div>
+              <div>
+                <label className="block text-green-300 text-sm mb-2">
+                  Mot de passe
+                </label>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="raun2025"
+                  className="bg-black/80 border-green-400 text-green-100 placeholder:text-green-300/50"
+                  disabled={isLoading}
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={isLoading || !username || !password}
+                className="w-full bg-green-600 hover:bg-green-700 text-black font-bold"
+              >
+                {isLoading ? "Connexion..." : "Se connecter"}
+              </Button>
+            </form>
+            <div className="mt-6 text-center">
+              <Button
+                onClick={() => window.location.href = "/"}
+                variant="ghost"
+                className="text-green-400 hover:bg-green-400/20"
+              >
+                <ChevronLeft className="w-4 h-4 mr-2" />
+                Retour à l'accueil
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
 export default function Admin() {
   const [, setLocation] = useLocation();
   const [currentFormIndex, setCurrentFormIndex] = useState(0);
   const [newCapsuleContent, setNewCapsuleContent] = useState("");
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const queryClient = useQueryClient();
 
-  const { data: currentUser } = useQuery({
+  // Vérifier l'authentification au chargement
+  useQuery({
     queryKey: ["/api/auth/me"],
     retry: false,
   });
@@ -83,16 +190,9 @@ export default function Admin() {
     setLocation("/");
   };
 
-  // Redirect to home if not authenticated, but allow some time for auth check
+  // Interface de connexion si non authentifié
   if (!currentUser) {
-    return (
-      <div className="bg-matrix-bg text-matrix-green min-h-screen font-mono flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-pulse text-lg mb-4">Vérification des autorisations...</div>
-          <div className="text-sm opacity-70">Redirection en cours...</div>
-        </div>
-      </div>
-    );
+    return <AdminLoginInterface onLogin={(user) => setCurrentUser(user)} />;
   }
 
   return (
